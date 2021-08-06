@@ -19,10 +19,10 @@
     </style>
 
     <style name="RobotoTextViewStyle" parent="android:Widget.TextView">
-        <item name="android:fontFamily">@font/touche</item>
+        <item name="android:fontFamily">@font/allerta</item>
     </style>
 
     <style name="RobotoButtonStyle" parent="android:Widget.Holo.Button">
-        <item name="android:fontFamily">@font/touche</item>
+        <item name="android:fontFamily">@font/allerta</item>
     </style>
 </resources>

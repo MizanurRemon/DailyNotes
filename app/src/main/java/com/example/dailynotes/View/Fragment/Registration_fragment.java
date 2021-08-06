@@ -71,7 +71,6 @@ public class Registration_fragment extends Fragment {
                 String password = passwordText.getText().toString().trim();
                 String rePassword = rePasswordText.getText().toString().trim();
 
-
                 validation(name, phone, mail, password, rePassword);
             }
         });

@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
     protected void attachBaseContext(Context newBase) {
         super.attachBaseContext(newBase);
         final Configuration override = new Configuration(newBase.getResources().getConfiguration());
-        override.fontScale = 1f;
+        override.fontScale = .9f;
         applyOverrideConfiguration(override);
     }
 

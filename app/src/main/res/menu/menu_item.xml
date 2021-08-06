@@ -4,6 +4,11 @@
     tools:showIn="navigation_view">
 
     <group android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/add_notes"
+            android:icon="@drawable/add_icon"
+            android:title="Add Notes" />
         <item
             android:id="@+id/log_out"
             android:icon="@drawable/power"
