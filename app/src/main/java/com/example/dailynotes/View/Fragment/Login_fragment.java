@@ -1,5 +1,8 @@
 package com.example.dailynotes.View.Fragment;
 
+import android.app.Dialog;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 
 import androidx.appcompat.widget.AppCompatButton;
@@ -30,11 +33,12 @@ public class Login_fragment extends Fragment {
     AppCompatButton signInButton;
     TextInputEditText phoneText, passwordText;
     TextInputLayout phoneError, passwordError;
-
     LoginViewModel loginViewModel;
     Login_API loginApi;
     String id;
     Session_Management session_management;
+    Dialog loaderDialog;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
@@ -43,7 +47,7 @@ public class Login_fragment extends Fragment {
         session_management = new Session_Management(getActivity());
         String userID = session_management.getSession();
 
-        if(!userID.equals("-1")){
+        if (!userID.equals("-1")) {
             getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, new Home_fragment()).addToBackStack(null).commit();
         }
 
@@ -57,6 +61,11 @@ public class Login_fragment extends Fragment {
 
         phoneError = (TextInputLayout) view.findViewById(R.id.phoneErrorID);
         passwordError = (TextInputLayout) view.findViewById(R.id.passwordErrorID);
+
+        loaderDialog = new Dialog(getActivity());
+        loaderDialog.setContentView(R.layout.loader_alert);
+        loaderDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        loaderDialog.setCancelable(false);
 
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -86,6 +95,7 @@ public class Login_fragment extends Fragment {
                         passwordError.setError(" ");
                     }
                 } else {
+                    loaderDialog.show();
                     sendData(phone, password);
                 }
             }
@@ -99,22 +109,18 @@ public class Login_fragment extends Fragment {
         loginViewModel.getMessage(phone, password).observe(Login_fragment.this, new Observer<Login_response>() {
             @Override
             public void onChanged(Login_response login_response) {
-
+                loaderDialog.dismiss();
                 try {
                     id = login_response.getUserID();
                 } catch (Exception err) {
                     id = "-1";
                 }
-
-
                 if (id.equals("-1")) {
                     Toast.makeText(getActivity(), "Invalid phone/password", Toast.LENGTH_SHORT).show();
                     session_management.saveSession(id);
                 } else {
-
                     session_management.saveSession(id);
                     getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, new Home_fragment()).addToBackStack(null).commit();
-
                 }
 
             }

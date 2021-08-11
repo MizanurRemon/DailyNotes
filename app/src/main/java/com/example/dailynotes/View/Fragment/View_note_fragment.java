@@ -13,6 +13,8 @@ import android.widget.TextView;
 
 import com.example.dailynotes.R;
 
+import java.util.Objects;
+
 public class View_note_fragment extends Fragment {
 
     TextView titleText, timeText, dateText, noteText;
@@ -50,17 +52,12 @@ public class View_note_fragment extends Fragment {
         noteText = (TextView) view.findViewById(R.id.noteID);
 
         backButton = (ImageView) view.findViewById(R.id.backButtonID);
-        backButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getActivity().getSupportFragmentManager().beginTransaction().setCustomAnimations(
-                        R.anim.slide_in,  // enter
-                        R.anim.fade_out,  // exit
-                        R.anim.fade_in,   // popEnter
-                        R.anim.slide_out  // popExit
-                ).replace(R.id.frame_container, new Home_fragment()).commit();
-            }
-        });
+        backButton.setOnClickListener(v -> requireActivity().getSupportFragmentManager().beginTransaction().setCustomAnimations(
+                R.anim.slide_in,  // enter
+                R.anim.fade_out,  // exit
+                R.anim.fade_in,   // popEnter
+                R.anim.slide_out  // popExit
+        ).replace(R.id.frame_container, new Home_fragment()).commit());
 
         return view;
     }

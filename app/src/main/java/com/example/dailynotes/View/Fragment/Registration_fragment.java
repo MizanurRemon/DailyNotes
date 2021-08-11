@@ -21,6 +21,7 @@ import com.example.dailynotes.Model.APIUtilize;
 import com.example.dailynotes.Model.Registration.Registration_API;
 import com.example.dailynotes.R;
 import com.example.dailynotes.ViewModel.RegistrationViewModel;
+import com.example.dailynotes.ViewModel.UserCheck_ViewModel;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
@@ -32,6 +33,7 @@ public class Registration_fragment extends Fragment {
     Registration_API registration_interface;
     Dialog loaderDialog;
     RegistrationViewModel registrationViewModel;
+    UserCheck_ViewModel userCheckViewModel;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -40,6 +42,7 @@ public class Registration_fragment extends Fragment {
 
         registration_interface = APIUtilize.registrationInterface();
         registrationViewModel = new ViewModelProvider(this).get(RegistrationViewModel.class);
+        userCheckViewModel = new ViewModelProvider(this).get(UserCheck_ViewModel.class);
 
         loaderDialog = new Dialog(getActivity());
         loaderDialog.setContentView(R.layout.loader_alert);
@@ -114,14 +117,32 @@ public class Registration_fragment extends Fragment {
                 rePasswordError.setError("Not match");
             } else {
                 loaderDialog.show();
-                registration(name, phone, mail, password);
+                userCheck(name, phone, mail, password);
             }
 
         }
     }
 
+    //usercheck
+    private void userCheck(String name, String phone, String mail, String password) {
+
+        userCheckViewModel.userCheck(phone).observe(getViewLifecycleOwner(), new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                if (s.equals("1")) {
+                    loaderDialog.dismiss();
+                    Toast.makeText(getActivity(), "Already registered", Toast.LENGTH_LONG).show();
+                } else if(s.equals("0")){
+                    registration(name, phone, mail, password);
+                }
+            }
+        });
+
+    }
+
+    //registration
     private void registration(String name, String phone, String mail, String password) {
-        // code
+
         registrationViewModel.getMessage(name, phone, mail, password).observe(Registration_fragment.this, new Observer<String>() {
 
             @Override
