@@ -7,6 +7,7 @@ import com.example.dailynotes.Model.Notes.Notes_API;
 import com.example.dailynotes.Model.Notes.Notes_add_API;
 import com.example.dailynotes.Model.Notes.Notes_delete_API;
 import com.example.dailynotes.Model.Notes.Notes_delete_repositories;
+import com.example.dailynotes.Model.Notes.Notes_edit_API;
 import com.example.dailynotes.Model.Notes.Notes_individual_API;
 import com.example.dailynotes.Model.Profile.Profile_API;
 import com.example.dailynotes.Model.Registration.Registration_API;
@@ -48,5 +49,9 @@ public class APIUtilize {
 
     public static Notes_individual_API notesIndividualApi(){
         return Retrofit_client.getClient(BASE_URL).create(Notes_individual_API.class);
+    }
+
+    public static Notes_edit_API notesEditApi(){
+        return Retrofit_client.getClient(BASE_URL).create(Notes_edit_API.class);
     }
 }

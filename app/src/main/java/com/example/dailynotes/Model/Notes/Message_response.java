@@ -1,6 +1,6 @@
 package com.example.dailynotes.Model.Notes;
 
-public class Notes_add_response {
+public class Message_response {
 
     String message;
 
