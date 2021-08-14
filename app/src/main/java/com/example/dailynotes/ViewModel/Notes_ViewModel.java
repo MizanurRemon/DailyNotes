@@ -8,8 +8,6 @@ import androidx.lifecycle.LiveData;
 
 import com.example.dailynotes.Model.Notes.Notes_repositories;
 import com.example.dailynotes.Model.Notes.Notes_response;
-import com.example.dailynotes.Model.Profile.Profile_repositories;
-import com.example.dailynotes.Model.Profile.Profile_response;
 
 import java.util.List;
 
@@ -21,6 +19,12 @@ public class Notes_ViewModel extends AndroidViewModel {
     public LiveData<List<Notes_response>> getNotes(String userID) {
 
         return Notes_repositories.getInstance().getMessage(userID);
+
+    }
+
+    public LiveData<Notes_response> getNotesData(String noteID) {
+
+        return Notes_repositories.getInstance().getMessageData(noteID);
 
     }
 }

@@ -1,7 +1,6 @@
 package com.example.dailynotes.Model.Notes;
 
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
@@ -20,10 +19,13 @@ public class Notes_repositories {
 
     public static Notes_repositories notes_repositories;
     Notes_API notesApi;
+    Notes_individual_API notesIndividualApi;
     MutableLiveData<List<Notes_response>> message;
+    MutableLiveData<Notes_response> messageData;
 
     private Notes_repositories() {
         notesApi = APIUtilize.notesApi();
+        notesIndividualApi = APIUtilize.notesIndividualApi();
     }
 
     public synchronized static Notes_repositories getInstance() {
@@ -47,19 +49,48 @@ public class Notes_repositories {
             public void onResponse(Call<List<Notes_response>> call, Response<List<Notes_response>> response) {
 
                 if (response.isSuccessful()) {
-                    List<Notes_response> notes_response = response.body();
-                    Log.d("success", "success");
-                    message.postValue(notes_response);
+                    List<Notes_response> notes_ID_response = response.body();
+                    message.postValue(notes_ID_response);
                 }
             }
 
             @Override
             public void onFailure(Call<List<Notes_response>> call, Throwable t) {
                 List<Notes_response> response = new ArrayList<>();
-                Log.d("error", t.toString());
                 message.postValue(response);
             }
         });
         return message;
     }
+
+    public @NonNull
+    MutableLiveData<Notes_response> getMessageData(@NonNull String noteID) {
+
+        if (messageData == null) {
+            messageData = new MutableLiveData<>();
+        }
+
+        Call<Notes_response> call = notesIndividualApi.getResponse(noteID);
+
+        call.enqueue(new Callback<Notes_response>() {
+            @Override
+            public void onResponse(Call<Notes_response> call, Response<Notes_response> response) {
+
+                if (response.isSuccessful()) {
+                    Notes_response n_response = response.body();
+                    messageData.postValue(n_response);
+                    Log.d("ErrorXXX", "gtacvjscv");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Notes_response> call, Throwable t) {
+                Notes_response response = new Notes_response();
+                messageData.postValue(response);
+                Log.d("ErrorXXX", t.getMessage());
+            }
+        });
+        return messageData;
+    }
+
 }

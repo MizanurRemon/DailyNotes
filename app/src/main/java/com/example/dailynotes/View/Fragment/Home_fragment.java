@@ -85,9 +85,9 @@ public class Home_fragment extends Fragment implements NavigationView.OnNavigati
 
         notesViewModel.getNotes(userID).observe(getViewLifecycleOwner(), new Observer<List<Notes_response>>() {
             @Override
-            public void onChanged(List<Notes_response> notes_responses) {
+            public void onChanged(List<Notes_response> notes_ID_respons) {
                 noteList = new ArrayList<>();
-                noteList = notes_responses;
+                noteList = notes_ID_respons;
                 noteAdapter = new Note_adapter(noteList);
                 noteAdapter.setOnClickListener(Home_fragment.this::OnItemClick, Home_fragment.this::OnItemDelete);
                 noteView.setAdapter(noteAdapter);
@@ -198,17 +198,15 @@ public class Home_fragment extends Fragment implements NavigationView.OnNavigati
 
         Notes_response response = noteList.get(position);
 
-        String title = response.getTitle();
-        String time = response.getTime();
-        String date = response.getDate();
-        String note = response.getNote();
+        String noteID = String.valueOf(response.getNoteID());
 
         getActivity().getSupportFragmentManager().beginTransaction().setCustomAnimations(
                 R.anim.slide_in,  // enter
                 R.anim.fade_out,  // exit
                 R.anim.fade_in,   // popEnter
                 R.anim.slide_out  // popExit
-        ).replace(R.id.frame_container, new View_note_fragment(title, time, date, note)).addToBackStack(null).commit();
+        ).replace(R.id.frame_container, new View_note_fragment(noteID)).addToBackStack(null).commit();
+
     }
 
     @Override
@@ -235,7 +233,7 @@ public class Home_fragment extends Fragment implements NavigationView.OnNavigati
                     @Override
                     public void onChanged(String s) {
                         loader.dismiss();
-                        if(s.equals("deleted")){
+                        if (s.equals("deleted")) {
                             Toast.makeText(getActivity(), s, Toast.LENGTH_LONG).show();
                             notes();
                         } else {

@@ -1,7 +1,5 @@
 package com.example.dailynotes.Model.Notes;
 
-import com.example.dailynotes.Model.Profile.Profile_response;
-
 import java.util.List;
 
 import retrofit2.Call;
